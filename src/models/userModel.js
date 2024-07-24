@@ -10,33 +10,21 @@ const user = (sequelize, type) => {
             type: type.STRING,
             comment: 'Nombre completp de usuario'
         },
-        identificationCardUser: {
-            type: type.STRING,
-            comment: 'Cedula de usuario'
-        },
-        emailUser: {
+        correoElectronico: {
             type: type.STRING,
             comment: 'correo de usuario'
         }, 
-        cellPhoneUser: {
-            type: type.STRING,
-            comment: 'Celular de usuario'
-        },
-        usernameUser: {
-            type: type.STRING,
-            comment: 'sobre nombre de usuario'
-        },
-        passwordUser: {
+        password: {
             type: type.STRING,
             comment: 'contraseña de usuario'
         },
-        rolUser:{
-            type: type.STRING,
-            comment: 'rolde usuario'
+        rucUser:{
+            type: type.DECIMAL,
+            comment: 'ruc de usuario'
         },
-        stateUser: {
+        numeroContacto: {
             type: type.STRING,
-            comment: 'estado de usuario'
+            comment: 'contacto de usuario'
         },
         createUser: {
             type: type.STRING,

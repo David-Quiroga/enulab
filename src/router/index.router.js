@@ -3,7 +3,7 @@ const { mostrar, login, mostrarRegistro, registro, CerrarSesion } = require('../
 const router = express.Router();
 
 router.get('/', mostrar)
-router.post('/', login)
+//router.post('/', login)
 router.get('/Register', mostrarRegistro)
 router.post('/Register', registro)
 router.get('/closeSection', CerrarSesion)

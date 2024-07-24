@@ -4,15 +4,16 @@ const sql = require('../Database/dataBase.sql')
 const indexCtl = {}
 
 indexCtl.mostrar = async (req, res) => {
-    try {
-        await sql.promise().execute('CREATE OR REPLACE VIEW pagePolicy AS SELECT p.*, o.* FROM pages p JOIN policies o on o.pageIdPage = p.idPage');
-        await sql.promise().execute('CREATE OR REPLACE VIEW diplomaPagina AS SELECT p.*, d.*, i.* FROM pages p JOIN diplomasTypes d ON d.pageIdPage = p.idPage JOIN diplomas i ON i.diplomasTypeIdDiplomasType = d.idDiplomasType')
-        const [pagina] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
-        res.render('login/index', { lista: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta SQL:', error.message);
-        res.status(500).send('Error interno del servidor');
-    }
+    // try {
+    //     await sql.promise().execute('CREATE OR REPLACE VIEW user AS SELECT p.*, o.* FROM pages p JOIN policies o on o.pageIdPage = p.idPage');
+    //     await sql.promise().execute('CREATE OR REPLACE VIEW diplomaPagina AS SELECT p.*, d.*, i.* FROM pages p JOIN diplomasTypes d ON d.pageIdPage = p.idPage JOIN diplomas i ON i.diplomasTypeIdDiplomasType = d.idDiplomasType')
+    //     const [pagina] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
+    //     res.render('login/LoginView', { lista: pagina, csrfToken: req.csrfToken() });
+    // } catch (error) {
+    //     console.error('Error en la consulta SQL:', error.message);
+    //     res.status(500).send('Error interno del servidor');
+    // }
+    res.render('login/LoginView')
 };
 
 
