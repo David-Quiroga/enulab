@@ -12,7 +12,7 @@ const bodyparser = require('body-parser');
 const fileUpload = require("express-fileupload");
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const csrf = require('csurf');
+//const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const { minify } = require('html-minifier-terser');
@@ -65,6 +65,7 @@ app.use(session({
     }
 }));
 
+
 // Configurar motor de vistas
 app.set('port', process.env.PORT || 9000);
 
@@ -103,30 +104,8 @@ app.use(async (req, res, next) => {
     next();
 });
 
-const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 5, // Limitar a 5 intentos de inicio de sesión por ventana por IP
-    message: 'Demasiados intentos de inicio de sesión desde esta IP, por favor intente nuevamente después de 15 minutos.'
-});
-app.use('/', loginLimiter);
 
 // Middleware de manejo de errores
-app.use((err, req, res, next) => {
-    if (res.headersSent) {
-        return next(err);
-    }
-
-    if (err.name === 'ValidationError') {
-        return res.status(400).json({ error: 'Datos inválidos.' });
-    }
-
-    if (err.code === 'EBADCSRFTOKEN') {
-        res.status(403).send('La validación del token CSRF ha fallado. Por favor, recarga la página.');
-    } else {
-        console.error(err.stack);
-        res.status(500).send('Error interno del servidor');
-    }
-});
 
 // Configurar variables globales
 app.use((req, res, next) => {
@@ -137,21 +116,6 @@ app.use((req, res, next) => {
 });
 
 // Middleware de protección CSRF
-const csrfMiddleware = csrf({ cookie: true });
-app.use(cookieParser());
-app.use(csrfMiddleware);
-
-app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-  });
-app.use((err, req, res, next) => {
-    if (err.code !== 'EBADCSRFTOKEN') return next(err);
-
-    // Manejo del error CSRF aquí
-    res.status(403);
-    res.send('La validación del token CSRF ha fallado. Por favor, recarga la página.');
-});
 
 // Configurar archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -175,9 +139,14 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
-// Rutas - Definir tus rutas aquí
-app.use(require('./router/index.router'));
-app.use(require('./router/envio.router'));
+// Importar y usar las rutas
+const indexRouter = require('./router/index.router');
+// const envioRouter = require('./router/envio.router');
+const restauranteRouter = require('./router/index.router');
+
+app.use('/', indexRouter)
+app.use('/restaurante', restauranteRouter); // Define la ruta para restaurante
+
 
 // Exportar la aplicación
 module.exports = app;

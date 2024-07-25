@@ -14,7 +14,7 @@ const empleados = (sequelize, type) => {
             type: type.DECIMAL,
             comment: 'cedula de empleados'
         }, 
-        edad: {
+        edadEmpleado: {
             type: type.DECIMAL,
             comment: 'edad de empleados'
         },
