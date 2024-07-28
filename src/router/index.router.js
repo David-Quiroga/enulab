@@ -3,7 +3,7 @@ const { mandar, mostrar} = require('../controller/index.controller');
 const router = express.Router();
 
 router.post('/restaurante', mandar)
-router.get('/restaurante/:id', mostrar);
+router.get('/restaurante', mostrar);
 
 
 

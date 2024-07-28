@@ -17,7 +17,7 @@ const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const { minify } = require('html-minifier-terser');
 const winston = require('winston');
-
+const cors = require('cors')
 const { Loader } = require('@googlemaps/js-api-loader')
 
 // Importar módulos locales
@@ -67,7 +67,7 @@ app.use(session({
 
 
 // Configurar motor de vistas
-app.set('port', process.env.PORT || 9000);
+app.set('port', process.env.PORT || 4200);
 
 // Configurar middleware
 app.use(cookieParser());
@@ -136,16 +136,16 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple()
     }));
 }
+app.use(cors());
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
 // Importar y usar las rutas
 const indexRouter = require('./router/index.router');
-// const envioRouter = require('./router/envio.router');
 const restauranteRouter = require('./router/index.router');
 
 app.use('/', indexRouter)
-app.use('/restaurante', restauranteRouter); // Define la ruta para restaurante
+app.use('/restaurante', restauranteRouter); 
 
 
 // Exportar la aplicación

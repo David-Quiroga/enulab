@@ -1,43 +1,47 @@
 const restaurante = (sequelize, type) => {
     return sequelize.define('restaurante', {
-        idRestaurante: {
+        id: {
             type: type.INTEGER,
             autoIncrement: true,
             primaryKey: true,
-            comment: 'Campo unico de restaurante'
+            comment: 'Campo único de restaurante'
         },
         nombreRestaurante: {
             type: type.STRING,
-            comment: 'Nombre completp de restaurante'
+            comment: 'Nombre completo del restaurante'
         },
         ubicacion: {
             type: type.STRING,
-            comment: 'Ubicacion del restaurante'
+            comment: 'Ubicación del restaurante'
         }, 
+        tipoComida: {
+            type: type.STRING,
+            comment: 'Tipo de comida del restaurante'
+        },
         objetivos: {
             type: type.STRING,
-            comment: 'mision y vision del restaurante'
+            comment: 'Misión y visión del restaurante'
         },
         logo: {
             type: type.STRING,
-            comment: 'logo del restaurante'
+            comment: 'Logo del restaurante'
         },
         descripcion: {
             type: type.STRING,
-            comment: 'descripcion del  restaurante'
+            comment: 'Descripción del restaurante'
         },
         createRestaurante: {
             type: type.STRING,
-            comment: 'crear de restaurante'
+            comment: 'Crear restaurante'
         },
         updateRestaurante: {
             type: type.STRING,
-            comment: 'actuazlizar de restaurante'
-        },
+            comment: 'Actualizar restaurante'
+        }
     }, {
         timestamps: false,
         comment: 'Tabla de restaurantes'
-    })
+    });
 }
 
-module.exports = restaurante
+module.exports = restaurante;
