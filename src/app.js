@@ -142,7 +142,11 @@ app.use(morgan('combined', { stream: { write: message => logger.info(message.tri
 
 // Importar y usar las rutas
 const restauranteRouter = require('./router/restauranteRouter');
+const employeeRouter = require('./router/employeeRouter')
+
+
 app.use('/restaurante', restauranteRouter)
+app.use('/empleado', employeeRouter)
 //app.use('/restaurante', restauranteRouter); 
 
 
