@@ -141,11 +141,9 @@ app.use(cors());
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
 // Importar y usar las rutas
-const indexRouter = require('./router/index.router');
-const restauranteRouter = require('./router/index.router');
-
-app.use('/', indexRouter)
-app.use('/restaurante', restauranteRouter); 
+const restauranteRouter = require('./router/restauranteRouter');
+app.use('/restaurante', restauranteRouter)
+//app.use('/restaurante', restauranteRouter); 
 
 
 // Exportar la aplicación

@@ -22,10 +22,10 @@ const restaurante = (sequelize, type) => {
             type: type.STRING,
             comment: 'Misión y visión del restaurante'
         },
-        logo: {
-            type: type.STRING,
-            comment: 'Logo del restaurante'
-        },
+        // logo:{
+        //     type: type.STRING,
+        //     comment: 'logo del restaurante'
+        // },
         descripcion: {
             type: type.STRING,
             comment: 'Descripción del restaurante'

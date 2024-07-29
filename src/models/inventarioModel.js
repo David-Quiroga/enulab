@@ -1,6 +1,6 @@
 const inventarrio = (sequelize, type) => {
     return sequelize.define('inventario', {
-        idRestaurante: {
+        idInventario: {
             type: type.INTEGER,
             autoIncrement: true,
             primaryKey: true,
@@ -26,11 +26,11 @@ const inventarrio = (sequelize, type) => {
             type: type.STRING,
             comment: 'descripcion del  inventario'
         },
-        createRestaurante: {
+        createInventario: {
             type: type.STRING,
             comment: 'crear de inventario'
         },
-        updateRestaurante: {
+        updateInventario: {
             type: type.STRING,
             comment: 'actuazlizar de inventario'
         },

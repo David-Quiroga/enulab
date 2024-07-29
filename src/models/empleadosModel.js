@@ -30,11 +30,11 @@ const empleados = (sequelize, type) => {
             type: type.STRING,
             comment: 'contacto de empleado'
         },
-        createUser: {
+        createEmpleado: {
             type: type.STRING,
             comment: 'crear de empleado'
         },
-        updateUser: {
+        updateEmpleado: {
             type: type.STRING,
             comment: 'actuazlizar de empleado'
         },
