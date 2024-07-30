@@ -27,4 +27,50 @@ restauranteCtl.mostrar = async (req, res) => {
     }
 };
 
+restauranteCtl.actualizar = async (req, res) => {
+    const { id } = req.params;
+    const { nombreRestaurante, ubicacion, tipoComida, objetivos, descripcion } = req.body;
+
+    // Verificar que el id y los campos obligatorios están presentes
+    if (!id || !nombreRestaurante || !ubicacion || !tipoComida || !descripcion) {
+        return res.status(400).send('Faltan campos obligatorios');
+    }
+
+    try {
+        const result = await sql.query(
+            'UPDATE restaurantes SET nombreRestaurante = ?, ubicacion = ?, tipoComida = ?, objetivos = ?, descripcion = ? WHERE id = ?',
+            [nombreRestaurante, ubicacion, tipoComida, objetivos, descripcion, id]
+        );
+
+        if (result.affectedRows > 0) {
+            res.status(200).send('Restaurante actualizado con éxito');
+        } else {
+            res.status(404).send('Restaurante no encontrado');
+        }
+    } catch (error) {
+        console.error("Error al actualizar el restaurante:", error);
+        res.status(500).send("Hubo un error al actualizar el restaurante");
+    }
+};
+
+restauranteCtl.listar = async(req, res) => {
+    const { id } = req.params
+    try {
+        console.log("ID a buscar:", id);
+        const rows = await sql.query(
+          "SELECT * FROM restaurantes WHERE id = ?",
+            [id]
+        );
+    
+        if (rows.length === 0) {
+            console.log("Estación no encontrada.");
+            return res.status(404).json({ message: 'Estación no encontrada' });
+        }
+        res.status(200).json(rows[0]);
+        } catch (error) {
+        console.error("Error al obtener la estación:", error);
+        res.status(500).json({ message: 'Error interno del servidor: ' + error.message });
+    }
+}
+
 module.exports = restauranteCtl;

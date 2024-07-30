@@ -26,4 +26,6 @@ employeeCtl.mostrar = async(req, res) => {
         res.status(500).send('Hubo un error al obtener el empleado')
     }
 }
+
+
 module.exports = employeeCtl;
