@@ -12,7 +12,7 @@ const bodyparser = require('body-parser');
 const fileUpload = require("express-fileupload");
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-//const csrf = require('csurf');
+const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const { minify } = require('html-minifier-terser');
@@ -105,8 +105,29 @@ app.use(async (req, res, next) => {
 });
 
 
-// Middleware de manejo de errores
+//!Middleware de manejo de errores
+// const loginLimiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 5, 
+//     message: 'Demasiados intentos de inicio de sesión desde esta IP, por favor intente nuevamente después de 15 minutos.'
+// });
+// app.use('/', loginLimiter);
 
+//! Middleware de manejo de errores
+// app.use((err, req, res, next) => {
+//     if (res.headersSent) {
+//         return next(err);
+//     }
+//     if (err.name === 'ValidationError') {
+//         return res.status(400).json({ error: 'Datos inválidos.' });
+//     }
+//     if (err.code === 'EBADCSRFTOKEN') {
+//         res.status(403).send('La validación del token CSRF ha fallado. Por favor, recarga la página.');
+//     } else {
+//         console.error(err.stack);
+//         res.status(500).send('Error interno del servidor');
+//     }
+// });
 // Configurar variables globales
 app.use((req, res, next) => {
     app.locals.message = req.flash('message');
@@ -115,7 +136,22 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware de protección CSRF
+// // Middleware para manejar cookies
+// app.use(cookieParser());
+
+// // Configurar middleware CSRF
+// const csrfProtection = csrf({ cookie: true });
+// // Middleware para protección CSRF
+// app.use(csrfProtection);
+
+// // Configurar variables globales
+// app.use((req, res, next) => {
+//     app.locals.message = req.flash('message');
+//     app.locals.success = req.flash('success');
+//     app.locals.user = req.user || null;
+//     app.locals.csrfToken = req.csrfToken(); // Agrega el token CSRF a las variables locales
+//     next();
+// });
 
 // Configurar archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -136,17 +172,25 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple()
     }));
 }
-app.use(cors());
+app.use(cors())
+
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
 // Importar y usar las rutas
 const restauranteRouter = require('./router/restauranteRouter');
 const employeeRouter = require('./router/employeeRouter')
-
+const metodosRouter = require('./router/metodosRouter');
+const inventarioRouter = require('./router/inventarioRouter');
+const userRouter = require('./router/usuarioRouter')
 
 app.use('/restaurante', restauranteRouter)
 app.use('/empleado', employeeRouter)
+app.use('/metodos', metodosRouter)
+app.use('/inventario', inventarioRouter)
+app.use('/usuario', userRouter)
+//app.use('/usuario', userRouter)
+
 //app.use('/restaurante', restauranteRouter); 
 
 

@@ -55,15 +55,33 @@ empleados.belongsTo(restaurante, {foreignKey: "idRestaurante"})
 restaurante.hasMany(horarios,{foreignKey: "idRestaurante"})
 horarios.belongsTo(restaurante, {foreignKey: "idRestaurante"})
 
+// Restaurante y Bebidas
+restaurante.hasMany(bebidas, {foreignKey: "idRestaurante"});
+bebidas.belongsTo(restaurante, {foreignKey: "idRestaurante"});
+
+// Restaurante y Platos
+restaurante.hasMany(platos, {foreignKey: "idRestaurante"});
+platos.belongsTo(restaurante, {foreignKey: "idRestaurante"});
+
+// Restaurante y Postres
+restaurante.hasMany(postres, {foreignKey: "idRestaurante"});
+postres.belongsTo(restaurante, {foreignKey: "idRestaurante"});
+
+// Restaurante y Factura
+restaurante.hasMany(factura, {foreignKey: "idRestaurante"});
+factura.belongsTo(restaurante, {foreignKey: "idRestaurante"});
 
 
+factura.belongsToMany(mPagos, { through: 'FacturaMetodosPagos', foreignKey: 'idFactura' });
+mPagos.belongsToMany(factura, { through: 'FacturaMetodosPagos', foreignKey: 'idMetodoPago' });
 
 
+restaurante.hasMany(proveedores, {foreignKey: "idRestaurante"});
+proveedores.belongsTo(restaurante, {foreignKey: "idRestaurante"});
 
 
-
-
-
+restaurante.hasMany(inventario, {foreignKey: "idRestaurante"});
+inventario.belongsTo(restaurante, {foreignKey: "idRestaurante"});
 
 sequelize.sync({ alter: true }) // alter will update the database schema to match the model
     .then(() => {

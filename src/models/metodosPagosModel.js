@@ -11,7 +11,7 @@ const mPagos = (sequelize, type) => {
             comment: 'Nombre de pagos'
         },
         estado:{
-            type: type.DECIMAL,
+            type: type.STRING,
             comment: 'estado de la pagos'
         },
         createMPagos: {

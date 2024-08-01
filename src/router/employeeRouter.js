@@ -1,8 +1,10 @@
 const express = require("express");
-const {mandar, mostrar} = require('../controller/empleadoController')
+const {mandar, mostrar, listar, actualizar} = require('../controller/empleadoController')
 const router = express.Router();
 
 router.post('/', mandar)
 router.get('/', mostrar);
+router.get('/:id', listar);
+router.put('/:id', actualizar )
 
 module.exports = router
