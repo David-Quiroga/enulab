@@ -32,6 +32,8 @@ const mPagosModel = require('../models/metodosPagosModel')
 const platosModel = require('../models/platosModel')
 const postresModel = require('../models/postresModel')
 const proveedoresModel = require('../models/proveedoresModel')
+const sopasModel = require('../models/sopasModel')
+const heladosModel = require('../models/heladosModel')
 //zincronia tablas
 const user = userModel(sequelize, Sequelize)
 const restaurante = restauranteModel(sequelize, Sequelize)
@@ -44,6 +46,8 @@ const mPagos = mPagosModel(sequelize, Sequelize)
 const platos = platosModel(sequelize, Sequelize)
 const postres = postresModel(sequelize, Sequelize)
 const proveedores = proveedoresModel(sequelize, Sequelize)
+const sopas = sopasModel(sequelize, Sequelize)
+const helado = heladosModel(sequelize, Sequelize)
 //relaciones
 
 user.hasMany(restaurante, {foreignKey: "idUsuario"});

@@ -189,7 +189,8 @@ const metodosRouter = require('./router/metodosRouter');
 const inventarioRouter = require('./router/inventarioRouter');
 const userRouter = require('./router/usuarioRouter')
 const proveedoresRouter = require('./router/proveedoresRouter');
-
+const sopasRouter = require('./router/sopasRouter')
+const heladitosRouter = require('./router/heladoRouter')
 
 app.use('/restaurante', restauranteRouter)
 app.use('/empleado', employeeRouter)
@@ -197,7 +198,8 @@ app.use('/metodos', metodosRouter)
 app.use('/inventario', inventarioRouter)
 app.use('/usuario', userRouter)
 app.use('/proveedores', proveedoresRouter)
-
+app.use('/sopas', sopasRouter)
+app.use('/helados', heladitosRouter)
 //app.use('/usuario', userRouter)
 
 //app.use('/restaurante', restauranteRouter); 
