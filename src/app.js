@@ -11,8 +11,8 @@ const MySQLStore = require('express-mysql-session')(session);
 const bodyparser = require('body-parser');
 const fileUpload = require("express-fileupload");
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const csrf = require('csurf');
+// const rateLimit = require('express-rate-limit');
+// const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const { minify } = require('html-minifier-terser');
@@ -28,19 +28,19 @@ require('./lib/passport');
 const app = express();
 
 // Configurar helmet y Content Security Policy
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://maps.googleapis.com"],
-            "img-src": ["'self'", "data:", "blob:", "https://maps.gstatic.com", "https://*.googleapis.com"],
-            "frame-src": ["'self'", "blob:", "https://www.google.com"],
-            "connect-src": ["'self'", "https://maps.googleapis.com"],
-            "object-src": ["'none'"],
-            "default-src": ["'self'"]
-        }
-    },
-}));
+// app.use(helmet({
+//     contentSecurityPolicy: {
+//         directives: {
+//             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+//             "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://maps.googleapis.com"],
+//             "img-src": ["'self'", "data:", "blob:", "http://localhost:4200", "https://maps.gstatic.com", "https://*.googleapis.com"],
+//             "frame-src": ["'self'", "blob:", "https://www.google.com"],
+//             "connect-src": ["'self'", "http://localhost:4200", "https://maps.googleapis.com"],
+//             "object-src": ["'none'"],
+//             "default-src": ["'self'"]
+//         }
+//     },
+// }));
 
 // Configurar almacenamiento de sesiones MySQL
 const mysqlOptions = {
@@ -136,15 +136,15 @@ app.use((req, res, next) => {
     next();
 });
 
-// // Middleware para manejar cookies
+// Middleware para manejar cookies
 // app.use(cookieParser());
 
-// // Configurar middleware CSRF
+// Configurar middleware CSRF
 // const csrfProtection = csrf({ cookie: true });
-// // Middleware para protección CSRF
+// Middleware para protección CSRF
 // app.use(csrfProtection);
 
-// // Configurar variables globales
+// Configurar variables globales
 // app.use((req, res, next) => {
 //     app.locals.message = req.flash('message');
 //     app.locals.success = req.flash('success');
@@ -153,9 +153,12 @@ app.use((req, res, next) => {
 //     next();
 // });
 
-// Configurar archivos estáticos
+// Configuración de archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/src/public', express.static(path.join(__dirname, 'src/public')));
+
+// Asegúrate de que esto cubre tus imágenes
+app.use('/img/usuario', express.static(path.join(__dirname, 'public/img/usuario')));
 
 // Configurar sistema de logging
 const logger = winston.createLogger({
@@ -172,7 +175,9 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple()
     }));
 }
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:8080' // Cambia esto al origen de tu aplicación Vue
+  }));
 
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
@@ -183,12 +188,16 @@ const employeeRouter = require('./router/employeeRouter')
 const metodosRouter = require('./router/metodosRouter');
 const inventarioRouter = require('./router/inventarioRouter');
 const userRouter = require('./router/usuarioRouter')
+const proveedoresRouter = require('./router/proveedoresRouter');
+
 
 app.use('/restaurante', restauranteRouter)
 app.use('/empleado', employeeRouter)
 app.use('/metodos', metodosRouter)
 app.use('/inventario', inventarioRouter)
 app.use('/usuario', userRouter)
+app.use('/proveedores', proveedoresRouter)
+
 //app.use('/usuario', userRouter)
 
 //app.use('/restaurante', restauranteRouter); 

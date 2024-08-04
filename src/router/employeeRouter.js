@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/', mandar)
 router.get('/', mostrar);
-router.get('/:id', listar);
-router.put('/:id', actualizar )
+router.get('/:idEmpleado', listar);
+router.put('/:idEmpleado', actualizar );
 
 module.exports = router
