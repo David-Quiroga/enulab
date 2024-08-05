@@ -24,7 +24,7 @@ sequelize.sync({ force: false })
 const userModel = require('../models/userModel');
 const restauranteModel = require('../models/restauranteModel')
 const empleadosModel = require('../models/empleadosModel')
-const horariosModel = require('../models/horarioModel')
+//const horariosModel = require('../models/horarioModel')
 const bebidasModel = require('../models/bebidasModel')
 const facturaModel = require('../models/facturaModel')
 const inventarioModel = require('../models/inventarioModel')
@@ -34,11 +34,12 @@ const postresModel = require('../models/postresModel')
 const proveedoresModel = require('../models/proveedoresModel')
 const sopasModel = require('../models/sopasModel')
 const heladosModel = require('../models/heladosModel')
+const entradaModel = require('../models/entradasModel')
 //zincronia tablas
 const user = userModel(sequelize, Sequelize)
 const restaurante = restauranteModel(sequelize, Sequelize)
 const empleados = empleadosModel(sequelize, Sequelize)
-const horarios = horariosModel(sequelize, Sequelize)
+//const horarios = horariosModel(sequelize, Sequelize)
 const bebidas = bebidasModel(sequelize, Sequelize)
 const factura = facturaModel(sequelize, Sequelize)
 const inventario = inventarioModel(sequelize, Sequelize)
@@ -48,6 +49,7 @@ const postres = postresModel(sequelize, Sequelize)
 const proveedores = proveedoresModel(sequelize, Sequelize)
 const sopas = sopasModel(sequelize, Sequelize)
 const helado = heladosModel(sequelize, Sequelize)
+const entradas = entradaModel(sequelize, Sequelize)
 //relaciones
 
 user.hasMany(restaurante, {foreignKey: "idUsuario"});
@@ -55,9 +57,6 @@ restaurante.belongsTo(user, {foreignKey: "idUsuario"})
 
 restaurante.hasMany(empleados, {foreignKey: "idRestaurante"})
 empleados.belongsTo(restaurante, {foreignKey: "idRestaurante"})
-
-restaurante.hasMany(horarios,{foreignKey: "idRestaurante"})
-horarios.belongsTo(restaurante, {foreignKey: "idRestaurante"})
 
 // Restaurante y Bebidas
 restaurante.hasMany(bebidas, {foreignKey: "idRestaurante"});
@@ -71,6 +70,15 @@ platos.belongsTo(restaurante, {foreignKey: "idRestaurante"});
 restaurante.hasMany(postres, {foreignKey: "idRestaurante"});
 postres.belongsTo(restaurante, {foreignKey: "idRestaurante"});
 
+// Definición de relaciones
+restaurante.hasMany(sopas, { foreignKey: 'idRestaurante' });
+sopas.belongsTo(restaurante, { foreignKey: 'idRestaurante' });
+
+restaurante.hasMany(helado, { foreignKey: 'idRestaurante' });
+helado.belongsTo(restaurante, { foreignKey: 'idRestaurante' });
+
+restaurante.hasMany(entradas, { foreignKey: 'idRestaurante' });
+entradas.belongsTo(restaurante, { foreignKey: 'idRestaurante' });
 // Restaurante y Factura
 restaurante.hasMany(factura, {foreignKey: "idRestaurante"});
 factura.belongsTo(restaurante, {foreignKey: "idRestaurante"});
@@ -100,7 +108,6 @@ module.exports = {
     bebidas,
 	empleados,
 	factura,
-	horarios,
 	inventario,
 	mPagos,
 	platos,

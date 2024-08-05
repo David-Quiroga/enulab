@@ -18,6 +18,14 @@ const helado = (sequelize, type) => {
             type: type.STRING,
             comment: 'precio del helado'
         },
+        porciones: {
+            type: type.STRING,
+            comment: 'Porciones del helado'
+        },
+        subCategoria: {
+            type: type.STRING,
+            comment: 'Sub Categoria del helado'
+        },
         estado:{
             type: type.STRING,
             comment: 'estado del helado'

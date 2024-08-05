@@ -1,39 +1,43 @@
 const bebidas = (sequelize, type) => {
     return sequelize.define('bebidas', {
-        idBebidas: {
+        idBebida: {
             type: type.INTEGER,
             autoIncrement: true,
             primaryKey: true,
-            comment: 'Campo unico de bebidas'
+            comment: 'Campo único de bebidas'
         },
         nombre: {
             type: type.STRING,
-            comment: 'Nombre de bebidas'
+            comment: 'Nombre de la bebida'
         },
         descripcion: {
             type: type.STRING,
-            comment: 'descripcion de bebidas'
+            comment: 'Descripción de la bebida'
         }, 
         precio: {
             type: type.STRING,
-            comment: 'precio de bebidas'
+            comment: 'Precio de la bebida'
         },
-        estado:{
-            type: type.DECIMAL,
-            comment: 'estado de la bebida'
-        },
-        createBebidas: {
+        subCategoria: {
             type: type.STRING,
-            comment: 'crear de bebidas'
+            comment: 'Subcategoría de la bebida'
         },
-        updateBebidas: {
+        estado: {
             type: type.STRING,
-            comment: 'actuazlizar de bebidas'
+            comment: 'Estado de la bebida'
         },
+        createBebida: {
+            type: type.DATE,
+            comment: 'Fecha de creación de la bebida'
+        },
+        updateBebida: {
+            type: type.DATE,
+            comment: 'Fecha de última actualización de la bebida'
+        }
     }, {
         timestamps: false,
         comment: 'Tabla de bebidas'
-    })
+    });
 }
 
-module.exports = bebidas
+module.exports = bebidas;

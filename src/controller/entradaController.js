@@ -1,13 +1,13 @@
 const orm = require('../Database/dataBase.orm.js')
 const sql = require('../Database/dataBase.sql.js')
-const heladosCtl = {}
+const entradasCtl = {}
 
-heladosCtl.mandar = async (req, res) => {
+entradasCtl.mandar = async (req, res) => {
     const {nombre, descripcion, precio, porciones, subCategoria, estado} = req.body;
     console.log("Datos recibidos")
     try {
         await sql.query(
-            'INSERT INTO helados (nombre, descripcion, precio, porciones, subCategoria,  estado) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO entradas (nombre, descripcion, precio, porciones, subCategoria,  estado) VALUES (?, ?, ?, ?, ?, ?)',
             [nombre, descripcion, precio, porciones, subCategoria, estado]
         );
         res.status(200).send('Helado creado con exito');
@@ -17,9 +17,9 @@ heladosCtl.mandar = async (req, res) => {
     }
 }
 
-heladosCtl.mostrar = async(req, res) => {
+entradasCtl.mostrar = async(req, res) => {
     try {
-        const listahelados = await sql.query('SELECT * FROM helados');
+        const listahelados = await sql.query('SELECT * FROM entradas');
         res.status(200).json(listahelados)
     } catch (err) {
         console.error('Error al obtener el helados', err)
@@ -27,18 +27,18 @@ heladosCtl.mostrar = async(req, res) => {
     }
 }
 
-heladosCtl.actualizar = async (req,res) => {
-    const { idHelado } = req.params;
+entradasCtl.actualizar = async (req,res) => {
+    const { idEntrada } = req.params;
     const { nombre, descripcion, precio, porciones, subCategoria, estado } = req.body;
 
     //Verificar que el id y los campos obligatorios están presentes
-    if (!idHelado || !nombre || !descripcion || !precio || !porciones || !subCategoria || !estado) {
+    if (!idEntrada || !nombre || !descripcion || !precio || !porciones || !subCategoria || !estado) {
         return res.status(400).send('Faltan campos obligatorios');
     }
 
     try {
-        const result = await sql.query('UPDATE helados SET nombre = ?, descripcion = ?, precio = ?, porciones = ?, subCategoria = ?, estado = ? WHERE idHelado= ?',
-            [nombre, descripcion, precio, porciones, subCategoria, estado, idHelado]);
+        const result = await sql.query('UPDATE entradas SET nombre = ?, descripcion = ?, precio = ?, porciones = ?, subCategoria = ?, estado = ? WHERE idEntrada = ?',
+            [nombre, descripcion, precio, porciones, subCategoria, estado, idEntrada]);
         if (result.affectedRows > 0) {
             res.status(200).send('Helado actualizado con éxito');
         } else {
@@ -50,11 +50,11 @@ heladosCtl.actualizar = async (req,res) => {
     }
 }
 
-heladosCtl.listar = async (req, res) => {
-    const { idHelado } = req.params;
+entradasCtl.listar = async (req, res) => {
+    const { idEntrada } = req.params;
     try {
-        console.log("ID a buscar:", idHelado);
-        const rows = await sql.query("SELECT * FROM helados WHERE idHelado = ?", [idHelado]);
+        console.log("ID a buscar:", idEntrada);
+        const rows = await sql.query("SELECT * FROM entradas WHERE idEntrada = ?", [idEntrada]);
         if (rows.length === 0) {
             console.log("Helado no encontrado.");
             return res.status(404).json({ message: 'Helado no encontrado' });
@@ -66,4 +66,4 @@ heladosCtl.listar = async (req, res) => {
     }
 };
 
-module.exports = heladosCtl;
+module.exports = entradasCtl;

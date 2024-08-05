@@ -149,6 +149,9 @@ const userRouter = require('./router/usuarioRouter')
 const proveedoresRouter = require('./router/proveedoresRouter');
 const sopasRouter = require('./router/sopasRouter')
 const heladitosRouter = require('./router/heladoRouter')
+const entradasRouter = require('./router/entradasRouter')
+const bebidasRouter = require('./router/bebidasRouter')
+//const visualizarRouter = require('./router/visualizarRouter')
 
 app.use('/restaurante', restauranteRouter)
 app.use('/empleado', employeeRouter)
@@ -158,6 +161,9 @@ app.use('/usuario', userRouter)
 app.use('/proveedores', proveedoresRouter)
 app.use('/sopas', sopasRouter)
 app.use('/helados', heladitosRouter)
+app.use('/entrada', entradasRouter)
+app.use('/bebidas', bebidasRouter)
+//app.use('/data', visualizarRouter)
 //app.use('/usuario', userRouter)
 
 //app.use('/restaurante', restauranteRouter); 
