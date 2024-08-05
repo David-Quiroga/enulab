@@ -19,16 +19,16 @@ const proveedores = (sequelize, type) => {
             comment: 'correo del proveedor'
         },
         direccion:{
-            type: type.DECIMAL,
+            type: type.STRING,
             comment: 'direccion del proveedor'
         },
         ciudad: {
             type: type.STRING,
             comment: 'ciudad del proveedor'
         },
-        provincia: {
+        estado: {
             type: type.STRING,
-            comment: 'provincia del provincia'
+            comment: 'estado del provincia'
         },
         tipoProducto: {
             type: type.STRING,

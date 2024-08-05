@@ -1,5 +1,7 @@
 const sql = require('../Database/dataBase.sql');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const secret = process.env.JWT_SECRET || 'tu_clave_secreta';
 
 const usuarioController = {};
 

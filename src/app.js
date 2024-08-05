@@ -105,30 +105,6 @@ app.use(async (req, res, next) => {
 });
 
 
-//!Middleware de manejo de errores
-// const loginLimiter = rateLimit({
-//     windowMs: 15 * 60 * 1000,
-//     max: 5, 
-//     message: 'Demasiados intentos de inicio de sesión desde esta IP, por favor intente nuevamente después de 15 minutos.'
-// });
-// app.use('/', loginLimiter);
-
-//! Middleware de manejo de errores
-// app.use((err, req, res, next) => {
-//     if (res.headersSent) {
-//         return next(err);
-//     }
-//     if (err.name === 'ValidationError') {
-//         return res.status(400).json({ error: 'Datos inválidos.' });
-//     }
-//     if (err.code === 'EBADCSRFTOKEN') {
-//         res.status(403).send('La validación del token CSRF ha fallado. Por favor, recarga la página.');
-//     } else {
-//         console.error(err.stack);
-//         res.status(500).send('Error interno del servidor');
-//     }
-// });
-// Configurar variables globales
 app.use((req, res, next) => {
     app.locals.message = req.flash('message');
     app.locals.success = req.flash('success');
@@ -136,24 +112,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware para manejar cookies
-// app.use(cookieParser());
-
-// Configurar middleware CSRF
-// const csrfProtection = csrf({ cookie: true });
-// Middleware para protección CSRF
-// app.use(csrfProtection);
-
-// Configurar variables globales
-// app.use((req, res, next) => {
-//     app.locals.message = req.flash('message');
-//     app.locals.success = req.flash('success');
-//     app.locals.user = req.user || null;
-//     app.locals.csrfToken = req.csrfToken(); // Agrega el token CSRF a las variables locales
-//     next();
-// });
-
-// Configuración de archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/src/public', express.static(path.join(__dirname, 'src/public')));
 

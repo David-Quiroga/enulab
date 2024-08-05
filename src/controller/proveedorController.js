@@ -1,12 +1,17 @@
 const orm = require('../Database/dataBase.orm.js');
+const sql = require('../Database/dataBase.sql.js')
+
 const proveedoresCtl = {};
 
 // Método para crear un nuevo proveedor
 proveedoresCtl.mandar = async (req, res) => {
     const { nombreProveedor, numContacto, emailContacto, direccion, ciudad, estado, tipoProducto } = req.body;
-    console.log('Datos recibidos:', req.body); // Añade este log para verificar los datos
+    console.log('Datos recibidos')
     try {
-        await orm.proveedores.create({nombreProveedor,numContacto,emailContacto,direccion,ciudad,estado,tipoProducto});
+        await sql.query(
+            'INSERT INTO proveedores (nombreProveedor, numContacto, emailContacto, direccion, ciudad, tipoProducto, estado) VALUES ( ?, ?, ? ,? ,? ,? ,? )',
+            [nombreProveedor, numContacto, emailContacto, direccion, ciudad, estado, tipoProducto]
+        )
         res.status(200).send('Proveedor creado con éxito');
     } catch (error) {
         console.error('Error al crear el proveedor:', error);
@@ -15,51 +20,15 @@ proveedoresCtl.mandar = async (req, res) => {
 };
 
 // Método para mostrar todos los proveedores
-proveedoresCtl.mostrar = async (req, res) => {
-    const { id } = req.params;
-    if (id) {
-      try {
-        const proveedor = await orm.proveedores.findByPk(id);
-        if (proveedor) {
-          res.status(200).json(proveedor);
-        } else {
-          res.status(404).send('Proveedor no encontrado');
-        }
-      } catch (err) {
-        console.error('Error al obtener proveedor', err);
-        res.status(500).send('Hubo un error al obtener el proveedor');
-      }
-    } else {
-      try {
-        const listaProveedores = await orm.proveedores.findAll();
-        res.status(200).json(listaProveedores);
-      } catch (err) {
-        console.error('Error al obtener proveedores', err);
-        res.status(500).send('Hubo un error al obtener los proveedores');
-      }
-    }
-  };
-
-// Método para eliminar un proveedor
-proveedoresCtl.eliminar = async (req, res) => {
-    const { id } = req.params;
-    console.log('ID recibido para eliminar:', id); // Añade este log para verificar el ID
+proveedoresCtl.mostrar = async(req, res) => {
     try {
-        const resultado = await orm.proveedores.destroy({
-            where: {
-                idProveedores: id
-            }
-        });
-        if (resultado) {
-            res.status(200).send('Proveedor eliminado con éxito');
-        } else {
-            res.status(404).send('Proveedor no encontrado');
-        }
+        const listaProveedores = await sql.query('SELECT * FROM proveedores')
+        res.status(200).json(listaProveedores)
     } catch (error) {
-        console.error('Error al eliminar el proveedor:', error);
-        res.status(500).send('Hubo un error al eliminar el proveedor');
+        console.error('Error al obtener los datos', error)
+        res.status(500).send('Hubo un error al obtener el restaurante')
     }
-};
+}
 
 // Método para actualizar un proveedor
 proveedoresCtl.actualizar = async (req, res) => {
@@ -86,6 +55,49 @@ proveedoresCtl.actualizar = async (req, res) => {
         }
     } catch (error) {
         console.error('Error al actualizar el proveedor:', error);
+        res.status(500).send('Hubo un error al actualizar el proveedor');
+    }
+};
+
+// Actualiza la función listar
+proveedoresCtl.listar = async (req, res) => {
+    const { id } = req.params; // Usa 'id' en lugar de 'idProveedores'
+    try {
+        console.log('ID a buscar:', id);
+        const rows = await sql.query('SELECT * FROM proveedores WHERE idProveedores = ?', [id]);
+        
+        if (rows.length === 0) {
+            console.log('Proveedor no encontrado');
+            return res.status(404).json({ message: 'Proveedor no encontrado' });
+        }
+        
+        res.status(200).json(rows[0]);
+    } catch (error) {
+        console.error('Error al obtener el proveedor', error);
+        res.status(500).json({ message: 'Error interno del servidor: ' + error.message });
+    }
+};
+
+// Actualiza la función actualizar
+proveedoresCtl.actualizar = async (req, res) => {
+    const { id } = req.params; // Usa 'id' en lugar de 'idProveedores'
+    const { nombreProveedor, numContacto, emailContacto, direccion, ciudad, estado, tipoProducto } = req.body;
+        
+    if(!id || !nombreProveedor || !numContacto || !emailContacto || !direccion || !ciudad || !estado || !tipoProducto){
+        return res.status(400).send('Faltan campos obligatorios');
+    }
+    try {
+        const result = await sql.query(
+            'UPDATE proveedores SET nombreProveedor = ?, numContacto = ?, emailContacto = ?, direccion = ?, ciudad = ?, estado = ?, tipoProducto = ? WHERE idProveedores = ?',
+            [nombreProveedor, numContacto, emailContacto, direccion, ciudad, estado, tipoProducto, id] // Incluye 'id' al final
+        );
+        if(result.affectedRows > 0) {
+            res.status(200).send('Proveedor actualizado con éxito');
+        } else {
+            res.status(404).send('Proveedor no encontrado');
+        }
+    } catch (err) {
+        console.error('Error al actualizar el proveedor', err);
         res.status(500).send('Hubo un error al actualizar el proveedor');
     }
 };
