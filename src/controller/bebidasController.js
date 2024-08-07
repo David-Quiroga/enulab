@@ -10,20 +10,20 @@ bebidasCtl.mandar = async (req, res) => {
             'INSERT INTO bebidas (nombre, descripcion, precio, subCategoria,  estado) VALUES (?, ?, ?, ?, ?)',
             [nombre, descripcion, precio, subCategoria, estado]
         );
-        res.status(200).send('Helado creado con exito');
+        res.status(200).send('Bebida creado con exito');
     } catch (err) {
-        console.error('Error al crear el helados', err)
-        res.status(500).send('Hubo un error al crear el helados')
+        console.error('Error al crear la bebida', err)
+        res.status(500).send('Hubo un error al crear la bebida')
     }
 }
 
 bebidasCtl.mostrar = async(req, res) => {
     try {
-        const listahelados = await sql.query('SELECT * FROM bebidas');
-        res.status(200).json(listahelados)
+        const listabebidas = await sql.query('SELECT * FROM bebidas');
+        res.status(200).json(listabebidas)
     } catch (err) {
-        console.error('Error al obtener el helados', err)
-        res.status(500).send('Hubo un error al obtener el helados')
+        console.error('Error al obtener la bebida', err)
+        res.status(500).send('Hubo un error al obtener la bebida')
     }
 }
 
@@ -62,7 +62,7 @@ bebidasCtl.listar = async (req, res) => {
         console.log("ID a buscar:", idBebida);
 
         // Realizar la consulta SQL
-        const [rows] = await sql.query("SELECT * FROM bebidas WHERE idBebida = ?", [idBebida]);
+        const rows = await sql.query("SELECT * FROM bebidas WHERE idBebida = ?", [idBebida]);
 
         // Verificar si `rows` es un array y si contiene resultados
         if (rows.length === 0) {

@@ -1,5 +1,5 @@
-const user = (sequelize, type) => {
-    return sequelize.define('users', {
+const User = (sequelize, type) => {
+    return sequelize.define('User', {
         idUsuario: {
             type: type.INTEGER,
             autoIncrement: true,
@@ -19,7 +19,7 @@ const user = (sequelize, type) => {
             comment: 'contraseña de usuario'
         },
         rucUser:{
-            type: type.DECIMAL,
+            type: type.STRING,
             comment: 'ruc de usuario'
         },
         numeroContacto: {
@@ -40,4 +40,4 @@ const user = (sequelize, type) => {
     })
 }
 
-module.exports = user
+module.exports = User

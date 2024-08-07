@@ -32,12 +32,12 @@ passport.use(
     'local.signin',
     new LocalStrategy(
         {
-            usernameField: 'nombreCompleto',
+            usernameField: 'username',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async (req, nombreCompleto, password, done) => {
-            if (!validateInput(nombreCompleto) || !validateInput(password)) {
+        async (req, username, password, done) => {
+            if (!validateInput(username) || !validateInput(password)) {
                 return done(null, false, req.flash("message", "Entrada inválida."));
             }
 
@@ -45,7 +45,7 @@ passport.use(
             for (let i = 0; i < users.length; i++) {
                 const user = await orm.user.findOne({ where: { identificationCardUser: users[i].identificationCardUser } });
                 let decryptedUsername = descifrarDatos(user.identificationCardUser)
-                if (decryptedUsername == nombreCompleto) {
+                if (decryptedUsername == username) {
                     const validPassword = await bcrypt.compare(password, user.passwordUser);
                     if (validPassword) {
                         return done(null, user, req.flash("success", "Bienvenido" + " " + descifrarDatos(user.usernameUser)));
@@ -58,42 +58,43 @@ passport.use(
         }
     )
 );
-//1234567890
+
 passport.use(
     'local.signup',
     new LocalStrategy(
         {
-            usernameField: 'nombreCompleto',
+            usernameField: 'username',
             passwordField: 'password',
             passReqToCallback: true,
         },
-        async (req, nombreCompleto, password, done) => {
+        async (req, username, password, done) => {
             try {
                 if (!validateInput(username) || !validateInput(password)) {
                     return done(null, false, req.flash("message", "Entrada inválida."));
                 }
-                const existingUser = await orm.user.findOne({ where: { identificationCardUser: cifrarDatos(nombreCompleto) } });
+                const existingUser = await orm.user.findOne({ where: { identificationCardUser: cifrarDatos(username) } });
                 if (existingUser) {
                     return done(null, false, req.flash('message', 'El nombre de usuario ya existe.'));
                 } else {
                     const hashedPassword = await helpers.hashPassword(password);
                     const {
-                        idUsuario,
-                        nombreCompleto,
-                        correoElectronico,
-                        password,
-                        rucUser,
-                        numeroContacto
+                        idUser,
+                        completeNameUser,
+                        identificationCardUser,
+                        emailUser,
+                        cellPhoneUser
                     } = req.body;
 
                     let newClient = {
-                        idUsuario: idUsuario,
-                        nombreCompleto: cifrarDatos(nombreCompleto),
-                        password: cifrarDatos(password),
-                        rucUser: cifrarDatos(rucUser),
-                        numeroContacto: cifrarDatos(numeroContacto),
-                        correoElectronico: cifrarDatos(correoElectronico),
+                        idUser: idUser,
+                        identificationCardUser: cifrarDatos(identificationCardUser),
+                        cellPhoneUser: cifrarDatos(cellPhoneUser),
+                        emailUser: cifrarDatos(emailUser),
+                        completeNameUser: cifrarDatos(completeNameUser),
+                        usernameUser: cifrarDatos(username),
                         passwordUser: hashedPassword,
+                        rolUser: 'administradora',
+                        stateUser: 'activado',
                         createUser: new Date().toLocaleString()
                     };
 
