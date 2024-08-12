@@ -1,4 +1,4 @@
-const bebidas = (sequelize, type) => {
+const postre = (sequelize, type) => {
     return sequelize.define('postres', {
         idPostres: {
             type: type.INTEGER,
@@ -19,8 +19,12 @@ const bebidas = (sequelize, type) => {
             comment: 'precio de postres'
         },
         estado:{
-            type: type.DECIMAL,
+            type: type.STRING,
             comment: 'estado de la postres'
+        },
+        subCategoria:{
+            type: type.STRING,
+            comment: 'subcategoria'
         },
         createPostres: {
             type: type.STRING,
@@ -36,4 +40,4 @@ const bebidas = (sequelize, type) => {
     })
 }
 
-module.exports = bebidas
+module.exports = postre

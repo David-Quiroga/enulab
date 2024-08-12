@@ -151,6 +151,7 @@ const sopasRouter = require('./router/sopasRouter')
 const heladitosRouter = require('./router/heladoRouter')
 const entradasRouter = require('./router/entradasRouter')
 const bebidasRouter = require('./router/bebidasRouter')
+//! Es el de helados
 //const visualizarRouter = require('./router/visualizarRouter')
 
 app.use('/restaurante', restauranteRouter)
@@ -163,6 +164,7 @@ app.use('/sopas', sopasRouter)
 app.use('/helados', heladitosRouter)
 app.use('/entrada', entradasRouter)
 app.use('/bebidas', bebidasRouter)
+//! Es el de helados
 //app.use('/data', visualizarRouter)
 //app.use('/usuario', userRouter)
 
