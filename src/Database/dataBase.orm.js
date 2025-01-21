@@ -21,36 +21,38 @@ sequelize.sync({ force: false })
 	});
 
 //extracionModelos
-const userModel = require('../models/userModel');
-const restauranteModel = require('../models/restauranteModel')
-const empleadosModel = require('../models/empleadosModel')
-//const horariosModel = require('../models/horarioModel')
-const bebidasModel = require('../models/bebidasModel')
-const facturaModel = require('../models/facturaModel')
-const inventarioModel = require('../models/inventarioModel')
-const mPagosModel = require('../models/metodosPagosModel')
-const platosModel = require('../models/platosModel')
-const postresModel = require('../models/postresModel')
-const proveedoresModel = require('../models/proveedoresModel')
-const sopasModel = require('../models/sopasModel')
-const heladosModel = require('../models/heladosModel')
-const entradaModel = require('../models/entradasModel')
-//zincronia tablas
-const user = userModel(sequelize, Sequelize)
-const restaurante = restauranteModel(sequelize, Sequelize)
-const empleados = empleadosModel(sequelize, Sequelize)
-//const horarios = horariosModel(sequelize, Sequelize)
-const bebidas = bebidasModel(sequelize, Sequelize)
-const factura = facturaModel(sequelize, Sequelize)
-const inventario = inventarioModel(sequelize, Sequelize)
-const mPagos = mPagosModel(sequelize, Sequelize)
-const platos = platosModel(sequelize, Sequelize)
-const postres = postresModel(sequelize, Sequelize)
-const proveedores = proveedoresModel(sequelize, Sequelize)
-const sopas = sopasModel(sequelize, Sequelize)
-const helado = heladosModel(sequelize, Sequelize)
-const entradas = entradaModel(sequelize, Sequelize)
-//relaciones
+const userModel 		= require('../models/userModel');
+const restauranteModel 	= require('../models/restauranteModel')
+const empleadosModel 	= require('../models/empleadosModel')
+const bebidasModel 		= require('../models/bebidasModel')
+const inventarioModel 	= require('../models/inventarioModel')
+const platosModel 		= require('../models/platosModel')
+const postresModel 		= require('../models/postresModel')
+const proveedoresModel 	= require('../models/proveedoresModel')
+const sopasModel 		= require('../models/sopasModel')
+const heladosModel 		= require('../models/heladosModel')
+const entradaModel 		= require('../models/entradasModel')
+const valoracionModel 	= require('../models/comentariosModel')
+const reservaModel 		= require('../models/reservaModel')
+
+//!sincronia tablas
+
+const user 			= userModel(sequelize, Sequelize)
+const restaurante 	= restauranteModel(sequelize, Sequelize)
+const empleados 	= empleadosModel(sequelize, Sequelize)
+const bebidas 		= bebidasModel(sequelize, Sequelize)
+const inventario 	= inventarioModel(sequelize, Sequelize)
+const platos 		= platosModel(sequelize, Sequelize)
+const postres 		= postresModel(sequelize, Sequelize)
+const proveedores 	= proveedoresModel(sequelize, Sequelize)
+const sopas 		= sopasModel(sequelize, Sequelize)
+const helado 		= heladosModel(sequelize, Sequelize)
+const entradas 		= entradaModel(sequelize, Sequelize)
+const valoracion 	= valoracionModel(sequelize, Sequelize)
+const reserva 		= reservaModel(sequelize, Sequelize)
+
+
+//!relaciones
 
 user.hasMany(restaurante, {foreignKey: "idUsuario"});
 restaurante.belongsTo(user, {foreignKey: "idUsuario"})
@@ -80,13 +82,6 @@ helado.belongsTo(restaurante, { foreignKey: 'idRestaurante' });
 restaurante.hasMany(entradas, { foreignKey: 'idRestaurante' });
 entradas.belongsTo(restaurante, { foreignKey: 'idRestaurante' });
 // Restaurante y Factura
-restaurante.hasMany(factura, {foreignKey: "idRestaurante"});
-factura.belongsTo(restaurante, {foreignKey: "idRestaurante"});
-
-
-factura.belongsToMany(mPagos, { through: 'FacturaMetodosPagos', foreignKey: 'idFactura' });
-mPagos.belongsToMany(factura, { through: 'FacturaMetodosPagos', foreignKey: 'idMetodoPago' });
-
 
 restaurante.hasMany(proveedores, {foreignKey: "idRestaurante"});
 proveedores.belongsTo(restaurante, {foreignKey: "idRestaurante"});
@@ -94,6 +89,12 @@ proveedores.belongsTo(restaurante, {foreignKey: "idRestaurante"});
 
 restaurante.hasMany(inventario, {foreignKey: "idRestaurante"});
 inventario.belongsTo(restaurante, {foreignKey: "idRestaurante"});
+
+// En el modelo de Usuario
+user.hasMany(valoracion, { foreignKey: 'idUsuario' });
+
+// En el modelo de Valoracion
+valoracion.belongsTo(user, { foreignKey: 'idUsuario' });
 
 sequelize.sync({ alter: true }) // alter will update the database schema to match the model
     .then(() => {
@@ -107,12 +108,11 @@ sequelize.sync({ alter: true }) // alter will update the database schema to matc
 module.exports = {
     bebidas,
 	empleados,
-	factura,
 	inventario,
-	mPagos,
 	platos,
 	postres,
 	proveedores,
 	restaurante,
+	valoracion,
 	user
 };

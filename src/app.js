@@ -27,21 +27,6 @@ require('./lib/passport');
 // Crear aplicación Express
 const app = express();
 
-// Configurar helmet y Content Security Policy
-// app.use(helmet({
-//     contentSecurityPolicy: {
-//         directives: {
-//             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-//             "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://maps.googleapis.com"],
-//             "img-src": ["'self'", "data:", "blob:", "http://localhost:4200", "https://maps.gstatic.com", "https://*.googleapis.com"],
-//             "frame-src": ["'self'", "blob:", "https://www.google.com"],
-//             "connect-src": ["'self'", "http://localhost:4200", "https://maps.googleapis.com"],
-//             "object-src": ["'none'"],
-//             "default-src": ["'self'"]
-//         }
-//     },
-// }));
-
 // Configurar almacenamiento de sesiones MySQL
 const mysqlOptions = {
     host: MYSQLHOST,
@@ -133,9 +118,8 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple()
     }));
 }
-app.use(cors({
-    origin: 'http://localhost:8080' // Cambia esto al origen de tu aplicación Vue
-  }));
+app.use(cors());
+
 
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
@@ -143,7 +127,6 @@ app.use(morgan('combined', { stream: { write: message => logger.info(message.tri
 // Importar y usar las rutas
 const restauranteRouter = require('./router/restauranteRouter');
 const employeeRouter = require('./router/employeeRouter')
-const metodosRouter = require('./router/metodosRouter');
 const inventarioRouter = require('./router/inventarioRouter');
 const userRouter = require('./router/usuarioRouter')
 const proveedoresRouter = require('./router/proveedoresRouter');
@@ -151,12 +134,11 @@ const sopasRouter = require('./router/sopasRouter')
 const heladitosRouter = require('./router/heladoRouter')
 const entradasRouter = require('./router/entradasRouter')
 const bebidasRouter = require('./router/bebidasRouter')
-//! Es el de helados
-//const visualizarRouter = require('./router/visualizarRouter')
+const comentarioRouter = require('./router/comentarioRouter')
+const reservaRouter = require('./router/reservaRouter')
 
 app.use('/restaurante', restauranteRouter)
 app.use('/empleado', employeeRouter)
-app.use('/metodos', metodosRouter)
 app.use('/inventario', inventarioRouter)
 app.use('/usuario', userRouter)
 app.use('/proveedores', proveedoresRouter)
@@ -164,11 +146,11 @@ app.use('/sopas', sopasRouter)
 app.use('/helados', heladitosRouter)
 app.use('/entrada', entradasRouter)
 app.use('/bebidas', bebidasRouter)
-//! Es el de helados
-//app.use('/data', visualizarRouter)
-//app.use('/usuario', userRouter)
+app.use('/comentario', comentarioRouter)
+app.use('/reserva', reservaRouter)
 
-//app.use('/restaurante', restauranteRouter); 
+const listEndpoints = require('express-list-endpoints');
+console.log(listEndpoints(app));
 
 
 // Exportar la aplicación

@@ -57,4 +57,24 @@ usuarioController.login = async (req, res) => {
         res.status(500).json({ error: 'Error en la autenticación' });
     }
 }
+
+usuarioController.validarCorreo = async (req, res) => {
+    const { correoElectronico } = req.body;
+  
+    try {
+      // Ejecutamos la consulta
+      const [rows] = await sql.query("SELECT * FROM users WHERE correoElectronico = ?", [correoElectronico]);
+  
+      // Asegurándonos de que `rows` es un arreglo y verificamos si contiene datos
+      if (Array.isArray(rows) && rows.length > 0) {
+        res.status(200).send("El correo existe en la base de datos.");
+      } else {
+        res.status(404).send("El correo no está registrado.");
+      }
+    } catch (error) {
+      console.error("Error al validar el correo:", error);
+      res.status(500).send("Error al procesar la solicitud.");
+    }
+  };
+
 module.exports = usuarioController;
